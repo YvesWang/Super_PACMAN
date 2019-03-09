@@ -218,8 +218,14 @@ class GameState:
     """
     Allows two states to be compared.
     """
-    return self.data == other.data
+    #print(self.data)
+    #print(other.data)
+    if other:
+        return self.data == other.data
+    else:
+        return False
 
+    
   def __hash__( self ):
     """
     Allows states to be keys of dictionaries.
