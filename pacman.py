@@ -588,20 +588,23 @@ def runGames( layout, pacman, ghosts, display, numGames, numTraining = 0, catchE
 	games = []
 	acc_score = 0
 
-	for i in range( numGames ):
+	for i in range(numGames):
 		beQuiet = i < numTraining
 		if beQuiet:
-				# Suppress output and graphics
-				import textDisplay
-				gameDisplay = textDisplay.NullGraphics()
-				rules.quiet = True
+			# Suppress output and graphics
+			import textDisplay
+			gameDisplay = textDisplay.NullGraphics()
+			rules.quiet = True
 		else:
-				gameDisplay = display
-				rules.quiet = False
+			gameDisplay = display
+			rules.quiet = False
 		game = rules.newGame( layout, acc_score, pacman, ghosts, gameDisplay, beQuiet, catchExceptions)
 		game.run()
 		if not beQuiet: games.append(game)
-		acc_score += game.state.data.score
+		if game.state.isLose():
+			break
+		else:
+			acc_score += game.state.data.score
 
 if __name__ == '__main__':
 	"""
