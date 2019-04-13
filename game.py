@@ -360,7 +360,7 @@ class GameStateData:
   """
 
   """
-  def __init__( self, prevState = None ):
+  def __init__( self, acc_score = 0, prevState = None ):
     """
     Generates a new data packet by copying information from its predecessor.
     """
@@ -371,6 +371,9 @@ class GameStateData:
       self.layout = prevState.layout
       self._eaten = prevState._eaten
       self.score = prevState.score
+    else:
+      self.score = acc_score
+      self.agentStates = []
     self._foodEaten = None
     self._capsuleEaten = None
     self._agentMoved = None
@@ -379,7 +382,7 @@ class GameStateData:
     self.scoreChange = 0
 
   def deepCopy( self ):
-    state = GameStateData( self )
+    state = GameStateData(prevState = self)
     state.food = self.food.deepCopy()
     state.layout = self.layout.deepCopy()
     state._agentMoved = self._agentMoved
@@ -476,10 +479,8 @@ class GameStateData:
     self.food = layout.food.copy()
     self.capsules = layout.capsules[:]
     self.layout = layout
-    self.score = 0
     self.scoreChange = 0
 
-    self.agentStates = []
     numGhosts = 0
     for isPacman, pos in layout.agentPositions:
       if not isPacman:
