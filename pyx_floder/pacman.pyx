@@ -65,7 +65,7 @@ class GameState:
 	# Accessor methods: use these to access state data #
 	####################################################
 
-	def getLegalActions( self, agentIndex=0 ):
+	def getLegalActions( self, int agentIndex=0 ):
 		"""
 		Returns the legal actions for the agent specified.
 		"""
@@ -76,7 +76,7 @@ class GameState:
 		else:
 			return GhostRules.getLegalActions( self, agentIndex )
 
-	def generateSuccessor( self, agentIndex, action):
+	def generateSuccessor( self, int agentIndex, action):
 		"""
 		Returns the successor state after the specified agent takes the action.
 		"""
@@ -131,12 +131,12 @@ class GameState:
 	def getGhostStates( self ):
 		return self.data.agentStates[1:]
 
-	def getGhostState( self, agentIndex ):
+	def getGhostState( self, int agentIndex ):
 		if agentIndex == 0 or agentIndex >= self.getNumAgents():
 			raise Exception("Invalid index passed to getGhostState")
 		return self.data.agentStates[agentIndex]
 
-	def getGhostPosition( self, agentIndex ):
+	def getGhostPosition( self, int agentIndex ):
 		if agentIndex == 0:
 			raise Exception("Pacman's index passed to getGhostPosition")
 		return self.data.agentStates[agentIndex].getPosition()
@@ -179,6 +179,7 @@ class GameState:
 		if there is food at (x,y), just call
 
 		walls = state.getWalls()
+        #print('walls is {}, type is {}'.format(walls, type(walls)))
 		if walls[x][y] == True: ...
 		"""
 		return self.data.layout.walls
@@ -200,7 +201,7 @@ class GameState:
 	# You shouldn't need to call these directly #
 	#############################################
 
-	def __init__( self, acc_score = 0, prevState = None ):
+	def __init__( self, int acc_score = 0, prevState = None ):
 		"""
 		Generates a new state by copying information from its predecessor.
 		"""
@@ -236,7 +237,7 @@ class GameState:
 
 		return str(self.data)
 
-	def initialize( self, layout, numGhostAgents=1000 ):
+	def initialize( self, layout, int numGhostAgents=1000 ):
 		"""
 		Creates an initial game state from a layout array (see layout.py).
 		"""
@@ -257,10 +258,10 @@ class ClassicGameRules:
 	These game rules manage the control flow of a game, deciding when
 	and how the game starts and ends.
 	"""
-	def __init__(self, timeout=30):
+	def __init__(self, int timeout=30):
 		self.timeout = timeout
 
-	def newGame( self, layout, acc_score, pacmanAgent, ghostAgents, display, quiet = False, catchExceptions=False):
+	def newGame( self, layout, int acc_score, pacmanAgent, ghostAgents, display, bint quiet = False, bint catchExceptions=False):
 		agents = [pacmanAgent] + ghostAgents[:layout.getNumGhosts()]
 		initState = GameState(acc_score = acc_score)
 		initState.initialize( layout, len(ghostAgents) )
@@ -288,25 +289,25 @@ class ClassicGameRules:
 	def getProgress(self, game):
 		return float(game.state.getNumFood()) / self.initialState.getNumFood()
 
-	def agentCrash(self, game, agentIndex):
+	def agentCrash(self, game, int agentIndex):
 		if agentIndex == 0:
 			print ("Pacman crashed")
 		else:
 			print ("A ghost crashed")
 
-	def getMaxTotalTime(self, agentIndex):
+	def getMaxTotalTime(self, int agentIndex):
 		return self.timeout
 
-	def getMaxStartupTime(self, agentIndex):
+	def getMaxStartupTime(self, int agentIndex):
 		return self.timeout
 
-	def getMoveWarningTime(self, agentIndex):
+	def getMoveWarningTime(self, int agentIndex):
 		return self.timeout
 
-	def getMoveTimeout(self, agentIndex):
+	def getMoveTimeout(self, int agentIndex):
 		return self.timeout
 
-	def getMaxTimeWarnings(self, agentIndex):
+	def getMaxTimeWarnings(self, int agentIndex):
 		return 0
 
 class PacmanRules:
@@ -372,7 +373,7 @@ class GhostRules:
 	These functions dictate how ghosts interact with their environment.
 	"""
 	GHOST_SPEED=1.0
-	def getLegalActions( state, ghostIndex ):
+	def getLegalActions( state, int ghostIndex ):
 		"""
 		Ghosts cannot stop, and cannot turn around unless they
 		reach a dead end, but can turn 90 degrees at intersections.
@@ -387,7 +388,7 @@ class GhostRules:
 		return possibleActions
 	getLegalActions = staticmethod( getLegalActions )
 
-	def applyAction( state, action, ghostIndex):
+	def applyAction( state, action, int ghostIndex):
 
 		legal = GhostRules.getLegalActions( state, ghostIndex )
 		if action not in legal:
@@ -407,7 +408,7 @@ class GhostRules:
 		ghostState.scaredTimer = max( 0, timer - 1 )
 	decrementTimer = staticmethod( decrementTimer )
 
-	def checkDeath( state, agentIndex):
+	def checkDeath( state, int agentIndex):
 		pacmanPosition = state.getPacmanPosition()
 		if agentIndex == 0: # Pacman just moved; Anyone can kill him
 			for index in range( 1, len( state.data.agentStates ) ):
@@ -422,7 +423,7 @@ class GhostRules:
 				GhostRules.collide( state, ghostState, agentIndex )
 	checkDeath = staticmethod( checkDeath )
 
-	def collide( state, ghostState, agentIndex):
+	def collide( state, ghostState, int agentIndex):
 		if ghostState.scaredTimer > 0:
 			state.data.scoreChange += 200
 			GhostRules.placeGhost(state, ghostState)
@@ -580,14 +581,14 @@ def loadAgent(pacman, nographics):
 				return getattr(module, pacman)
 	raise Exception('The agent ' + pacman + ' is not specified in any *Agents.py.')
 
-def runGames( layout, pacman, ghosts, display, numGames, numTraining = 0, catchExceptions=False, timeout=30 ):
+def runGames( layout, pacman, ghosts, display, int numGames, int numTraining = 0, bint catchExceptions=False, int timeout=30 ):
 	import __main__
 	__main__.__dict__['_display'] = display
 
 	rules = ClassicGameRules(timeout)
 	games = []
-	acc_score = 0
-
+	cdef int acc_score = 0
+    #cdef int i
 	for i in range(numGames):
 		beQuiet = i < numTraining
 		if beQuiet:

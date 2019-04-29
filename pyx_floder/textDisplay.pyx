@@ -35,14 +35,14 @@ class PacmanGraphics:
       global SLEEP_TIME
       SLEEP_TIME = speed
   
-  def initialize(self, state, isBlue = False):
+  def initialize(self, state, bint isBlue = False):
     self.draw(state)
     self.pause()
     self.turn = 0
     self.agentCounter = 0
     
   def update(self, state):
-    numAgents = len(state.agentStates)
+    cdef int numAgents = len(state.agentStates)
     self.agentCounter = (self.agentCounter + 1) % numAgents
     if self.agentCounter == 0:
       self.turn += 1

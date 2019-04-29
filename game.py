@@ -29,6 +29,7 @@ class Agent:
   def registerInitialState(self, state): # inspects the starting state
   """
   def __init__(self, index=0):
+    
     self.index = index
 
   def getAction(self, state):

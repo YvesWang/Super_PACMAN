@@ -21,7 +21,7 @@ class KeyboardAgent(Agent):
   SOUTH_KEY = 's'
   STOP_KEY = 'q'
 
-  def __init__( self, index = 0 ):
+  def __init__( self, int index = 0 ):
     
     self.lastMove = Directions.STOP
     self.index = index
@@ -39,8 +39,10 @@ class KeyboardAgent(Agent):
       self.keys = keys
     
     legal = state.getLegalActions(self.index)
+    #print('legal is {}, type {}'.format(legal, type(legal)))
     move = self.getMove(legal)
-    
+    #print('move is {}, type is {}'.format(move, type(move)))
+
     if move == Directions.STOP:
       # Try to move in the same direction as before
       if self.lastMove in legal:

@@ -11,6 +11,7 @@ from util import raiseNotDefined
 import time, os
 import traceback
 
+
 try:
   import boinc
   _BOINC_ENABLED = True
@@ -28,7 +29,8 @@ class Agent:
 
   def registerInitialState(self, state): # inspects the starting state
   """
-  def __init__(self, index=0):
+  def __init__(self, int index=0):
+
     self.index = index
 
   def getAction(self, state):
@@ -70,7 +72,9 @@ class Configuration:
 
   def __init__(self, pos, direction):
     self.pos = pos
+    #print('pos is {}'.format(pos))
     self.direction = direction
+    #print('direction is {}, type is {}'.format(direction, type(direction)))
 
   def getPosition(self):
     return (self.pos)
@@ -79,7 +83,7 @@ class Configuration:
     return self.direction
 
   def isInteger(self):
-    x,y = self.pos
+    x, y = self.pos
     return x == int(x) and y == int(y)
 
   def __eq__(self, other):
@@ -155,7 +159,7 @@ class Grid:
 
   The __str__ method constructs an output that is oriented like a pacman board.
   """
-  def __init__(self, width, height, initialValue=False, bitRepresentation=None):
+  def __init__(self, int width, int height, initialValue=False, bitRepresentation=None):
     if initialValue not in [False, True]: raise Exception('Grids can only contain booleans')
     self.CELLS_PER_INT = 30
 
@@ -165,7 +169,7 @@ class Grid:
     if bitRepresentation:
       self._unpackBits(bitRepresentation)
 
-  def __getitem__(self, i):
+  def __getitem__(self, int i):
     return self.data[i]
 
   def __setitem__(self, key, item):
@@ -472,7 +476,7 @@ class GameStateData:
       return '3'
     return 'E'
 
-  def initialize( self, layout, numGhostAgents ):
+  def initialize( self, layout, int numGhostAgents ):
     """
     Creates an initial game state from a layout array (see layout.py).
     """
@@ -584,8 +588,8 @@ class Game:
         ## TODO: could this exceed the total time
         self.unmute()
 
-    agentIndex = self.startingIndex
-    numAgents = len( self.agents )
+    cdef int agentIndex = self.startingIndex
+    cdef int numAgents = len( self.agents )
 
     while not self.gameOver:
       # Fetch the next agent

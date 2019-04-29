@@ -15,12 +15,13 @@ import util
 from SpathGhost import BFS
 
 class GhostAgent( Agent ):
-  def __init__( self, index ):
+  def __init__( self, int index ):
     self.index = index
 
   def getAction( self, state ):
     dist = self.getDistribution(state)
-    if len(dist) == 0: 
+    #print('type of dist is {}'.format(type(dist)))
+    if len(dist) == 0:
       return Directions.STOP
     else:
       return util.chooseFromDistribution( dist )
@@ -49,6 +50,7 @@ class DirectionalGhost( GhostAgent ):
     ghostState = state.getGhostState( self.index )
     legalActions = state.getLegalActions( self.index )
     pos = state.getGhostPosition( self.index )
+    #print('pos is {}, type is {}'.format(pos, type(pos)))
     isScared = ghostState.scaredTimer > 0
     
     speed = 1
@@ -78,7 +80,7 @@ class DirectionalGhost( GhostAgent ):
 
 class ShortestPathGhost( GhostAgent ):
   "A ghost that prefers to rush Pacman, or flee when scared."
-  def __init__( self, index, prob_attack=0.8, prob_scaredFlee=0.8 ):
+  def __init__( self, int index, float prob_attack=0.8, float prob_scaredFlee=0.8 ):
     self.index = index
     self.prob_attack = prob_attack
     self.prob_scaredFlee = prob_scaredFlee
@@ -88,9 +90,10 @@ class ShortestPathGhost( GhostAgent ):
     ghostState = state.getGhostState( self.index )
     legalActions = state.getLegalActions( self.index )
     pos = state.getGhostPosition( self.index )
-    isScared = ghostState.scaredTimer > 0
+    #print('pos is {}, type is {}'.format(pos, type(pos)))
+    cdef bint isScared = ghostState.scaredTimer > 0
     
-    speed = 1
+    cdef float speed = 1.0
     if isScared: speed = 0.5
     
     actionVectors = [Actions.directionToVector( a, speed ) for a in legalActions]
