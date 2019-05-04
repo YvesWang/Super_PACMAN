@@ -287,7 +287,7 @@ def _clear_keys(event=None):
 
 #This line is complete (tkinter)
 def keys_pressed(#d_o_e=tkinter.tkinter.dooneevent,
-                 d_o_e=tkinter.Tk().tk.dooneevent,
+                 d_o_e=tkinter.Tk().tk.doneevent,
                  #d_w=tkinter.DONT_WAIT,
                  d_w=tkinter._tkinter.DONT_WAIT):
     d_o_e(d_w)
@@ -313,7 +313,7 @@ def wait_for_keys():
 #This line is complete (tkinter)
 def remove_from_screen(x,
                        #d_o_e=tkinter.tkinter.dooneevent,
-                       d_o_e=tkinter.Tk().tk.dooneevent,
+                       d_o_e=tkinter.Tk().tk.doneevent,
                        #d_w=tkinter.tkinter.DONT_WAIT,
                        d_w=tkinter._tkinter.DONT_WAIT):
     _canvas.delete(x)
@@ -353,7 +353,7 @@ def move_to(object, x, y=None,
 #This line is complete (tkinter)
 def move_by(object, x, y=None,
             #d_o_e=tkinter.tkinter.dooneevent,
-            d_o_e=tkinter.Tk().tk.dooneevent,
+            d_o_e=tkinter.Tk().tk.doneevent,
             #d_w=tkinter.tkinter.DONT_WAIT
             d_w=tkinter._tkinter.DONT_WAIT):
     if y is None:
